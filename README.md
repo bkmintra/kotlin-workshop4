@@ -1,31 +1,51 @@
-# ktor-sample
+# Ktor Task Management API
 
-This project was created using the [Ktor Project Generator](https://start.ktor.io).
+โปรเจกต์นี้เป็น RESTful API สำหรับจัดการรายการงาน (Task Management) ที่สร้างขึ้นด้วยภาษา Kotlin และ Ktor Framework
 
-Here are some useful links to get you started:
- * [Ktor Documentation](https://ktor.io/docs/home.html)
- * [Ktor GitHub page](https://github.com/ktorio/ktor)
- * [Ktor Slack chat](https://app.slack.com/client/T09229ZC6/C0A974TJ9). [Request an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up).
+## เทคโนโลยีที่ใช้
 
+- **Kotlin**: ภาษาหลักในการพัฒนา
+- **Ktor Framework**: ใช้สำหรับการสร้าง Web Application (ใช้ Netty Engine)
+- **kotlinx.serialization**: จัดการการแปลงข้อมูล (Serialization/Deserialization) ในรูปแบบ JSON
+- **In-Memory Repository**: เก็บข้อมูลการทำงานชั่วคราวไว้ในหน่วยความจำ (List)
 
-## Features
-Here's a list of features included in this project:
+## โครงสร้างข้อมูล (Data Models)
 
-| Name | Description |
-|------|-------------|
+- `Task(id: Int, content: String, isDone: Boolean = false)`
+- `TaskRequest(content: String, isDone: Boolean = false)`
 
-## Building & Running
-To build or run the project, use one of the following tasks:
+## API Endpoints
 
+| HTTP Method | Endpoint      | รายละเอียด                                 | ผลลัพธ์ที่สำเร็จ (Status) | กรณีผิดพลาด (Status) |
+| ----------- | ------------- | ------------------------------------------ | ------------------------- | -------------------- |
+| `GET`       | `/tasks`      | ดึงข้อมูล Task ทั้งหมด                     | `200 OK`                  | -                    |
+| `GET`       | `/tasks/{id}` | ดึงข้อมูล Task ตาม ID ที่ระบุ              | `200 OK`                  | `404 Not Found`      |
+| `POST`      | `/tasks`      | สร้าง Task ใหม่ โดยรับ Request Body เข้ามา | `201 Created`             | -                    |
+| `PUT`       | `/tasks/{id}` | แก้ไข/อัปเดต Task ตาม ID                   | `200 OK`                  | `404 Not Found`      |
+| `DELETE`    | `/tasks/{id}` | ลบข้อมูล Task ตาม ID                       | `204 No Content`          | `404 Not Found`      |
 
-| Task | Description |
-|------|-------------|
-| `./gradlew test`    | Run the tests     |
-| `./gradlew build`   | Build the project |
-| `./gradlew run`     | Run the server    |
+## การรันโปรเจกต์
 
-If the server starts successfully, you'll see the following output:
+รันคำสั่งเหล่านี้ผ่าน Terminal หรือ Command Line ในโฟลเดอร์โปรเจกต์:
+
+- **รันเซิร์ฟเวอร์ API:**
+  ```bash
+  ./gradlew run
+  ```
+- **รันการทดสอบ (Unit Tests):**
+  ```bash
+  ./gradlew test
+  ```
+- **บิวด์โปรเจกต์:**
+  ```bash
+  ./gradlew build
+  ```
+
+หลังจากเซิร์ฟเวอร์รันสำเร็จ จะแสดงข้อความประมาณนี้:
+
 ```
 2024-12-04 14:32:45.584 [main] INFO  Application - Application started in 0.303 seconds.
 2024-12-04 14:32:45.682 [main] INFO  Application - Responding at http://0.0.0.0:8080
 ```
+
+จากนั้นคุณสามารถเรียกใช้งาน API ผ่าน `http://localhost:8080` (เช่นด้วย Postman, cURL หรือ Browser) ได้เลย
